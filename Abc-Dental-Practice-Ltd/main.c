@@ -38,11 +38,13 @@ void DisplayPatientDetailsByPps(struct node* top, int pps);
 void DisplayPatientDetailsByName(struct node* top, char lastName[20]);
 int searchName(struct node* top, char lastName[20]);
 void stringLwr(char *s);
-
+void updatePatientDetailsByName(struct node* top, char lastName[20]);
+void updatePatientDetailsByPps(struct node* top, int sPps);
 //*******************************************************************************************************************
 // main function
 void main()
 {
+	printf("\t\t\t\tWelcome to ABC Dental Practice Ltd Application\n");
 	userlogin();
 }//main
 
@@ -469,7 +471,7 @@ void DisplayPatientDetailsByName(struct node* top, char lastName[20])
 		}
 		temp = temp->NEXT;
 	}
-}// patient details by name
+}// printing patient details by name
 
 //****************************************************************************************************************
 // to lower case function
@@ -565,7 +567,7 @@ void menu()
 	struct node* headPtr = NULL;
 	int choice;
 	int chkId;
-	printf("Please enter 1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n-1 to exit the program: ");
+	printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n-1 to exit the program: ");
 	scanf("%d", &choice);
 	while (choice != -1)
 	{
@@ -577,7 +579,7 @@ void menu()
 			{
 				AddPatientAtEnd(headPtr);
 			}//else
-		}
+		}//choice 1 if
 		else if (choice == 2)
 		{
 			DisplayAllPatients(headPtr);
@@ -599,10 +601,420 @@ void menu()
 				printf("Please enter the last name of the patient to get its record: ");
 				scanf("%s", &name);
 				DisplayPatientDetailsByName(headPtr, name);
+			}// if by name
+		}//choice 3 else if
+		else if (choice == 4)
+		{
+			printf("Please enter 1 to update patient details by entering its pps number\n\t\tor\nenter 2 to update patient details by entering its Name:\n");
+			scanf("%d", &choice);
+			if (choice == 1)
+			{
+				int pps;
+				printf("Please enter the pps number of the patient to update its record: ");
+				scanf("%d", &pps);
+				updatePatientDetailsByPps(headPtr, pps);
 			}// if by pps
-		}
-		printf("Please enter 1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n-1 to exit the program: ");
+			else if (choice == 2)
+			{
+				char name[20];
+				printf("Please enter the last name of the patient to update its record: ");
+				scanf("%s", &name);
+				updatePatientDetailsByName(headPtr, name);
+			}// if by name
+		}// if choice 4
+
+		printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n-1 to exit the program: ");
 		scanf("%d", &choice);
 	}//while
-}
+}// menu
+
+//**********************************************************************************************************
+// updating Patient details matching the Patient Name entered by user
+void updatePatientDetailsByName(struct node* top, char lastName[20])
+{
+	struct node* temp = top;
+	int pps;
+	int choice;
+	int option;
+	char mail[30];
+	while (temp != NULL)
+	{
+		if (searchName(top, lastName) == 0)
+		{
+			printf("No Records Found Make sure to enter correct name\n");
+			return;
+		}
+		else if (strcmp(temp->lastName, lastName) == 0)
+		{
+			printf("Plese enter 1 to update patient's pps\n2 to update patient's First Name\n3 to update patient's Last Name\n4 to update patient's Year born\n5 to update patient's Gender\n6 to update patient's Email Address\n7 to update patient's Next of Kin Name\n8 to update patient's Last Appointment\n9 to update patient's Weight\n10 to update patient's Height\n11 to update patient's allergies to any medications\n12 to update patient's smoke per day\n13 to update patient's drink per week\n14 to update patient's exercise\n");
+			scanf("%d", &choice);
+			if (choice == 1)
+			{
+				printf("Please enter the Patient's PPS Number (must be unique)\n");
+				scanf("%d", &pps);
+
+				if (searchList(top, pps) == 1)
+				{
+					printf("Sorry the pps already exists already exists\n");
+					return;
+				}
+				temp->ppsNumber = pps;
+			}// choice 1
+			if (choice == 2)
+			{
+				printf("Please enter the Patient's First Name\n");
+				scanf("%s", &temp->firstName);
+			}// choice 2
+			if (choice == 3)
+			{
+				printf("Please enter the Patient's Second Name\n");
+				scanf("%s", &temp->lastName);
+			}// choice 3
+			if (choice == 4)
+			{
+				printf("Please enter the Patient's Year Born\n");
+				scanf("%d", &temp->yearBorn);
+			}//choice 4
+			if (choice == 5)
+			{
+				printf("Please enter the Patient's Gender\npress 1 for Male\n2 for Female\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+
+					strcpy(temp->gender, " Male");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->gender, "Female");
+				}
+				else
+				{
+					printf("Invalid Option Try Again\n");
+					printf("Please enter the Patient's Gender\npress 1 for Male\n2 for Female\n");
+					scanf("%d", &option);
+				}
+			}//choice 5
+			if (choice == 6)
+			{
+				printf("Please enter the Patient's Email Address (must contain an @, a full stop and a .com)\n");
+				scanf("%s", &mail);
+				if (((strchr(mail, '@')) && (strchr(mail, '.'))) && ((strstr(mail, ".com") != NULL) || (strstr(mail, ".ie") != NULL)))
+				{
+					strcpy(temp->email, mail);
+				}
+				else
+				{
+					printf("invalid Email Address");
+					return;
+				}
+			}//choice 6
+			if (choice == 7)
+			{
+				printf("Please enter the Patient's Next of Kin Name \n");
+				scanf("%s", &temp->nextOfKinName);
+			}//choice 7
+			if (choice == 8)
+			{
+				printf("Please enter the Patient's Last Appointment\n");
+				scanf("%s", &temp->lastAppointment);
+			}// choice 8
+			if (choice == 9)
+			{
+				printf("Please enter the Patient's Weight in Kg\n");
+				scanf("%d", &temp->weight);
+			}//choice 9
+			if (choice == 10)
+			{
+				printf("Please enter the Patient's Height in cm\n");
+				scanf("%f", &temp->height);
+			}// choice 10
+			if (choice == 11)
+			{
+				printf("Does the patient has any allergies to any medications?\npress 1 for yes\n2 for no\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+
+					strcpy(temp->AllergiesToAnyMedications, " yes");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->AllergiesToAnyMedications, " no");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("Does the patient has any allergies to any medications?\npress 1 for yes\n2 for no\n");
+					scanf("%d", &option);
+				}
+			}//choice 11
+			if (choice == 12)
+			{
+				printf("How many cigarettes would you smoke per day?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+					strcpy(temp->cigarettesSmokePerDay, " None");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->cigarettesSmokePerDay, " Less than ten cigarettes");
+				}
+				else if (option == 3)
+				{
+					strcpy(temp->cigarettesSmokePerDay, " More than ten cigarettes");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("How many cigarettes would you smoke per day?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+					scanf("%d", &option);
+				}
+			}//choice 12
+			if (choice == 13)
+			{
+				printf("How much alcohol would you drink per week?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, " None");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, " Less than ten units");
+				}
+				else if (option == 3)
+				{
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, " More than ten units");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("How much alcohol would you drink per week?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+					scanf("%d", &option);
+				}
+			}//choice 13
+			if (choice == 14)
+			{
+				printf("How often do you exercise?\npress 1 for never\n2 for less than twice per week\n3 for more than twice per week \n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+					strcpy(temp->activity, " Never");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->activity, " Less than twice per week");
+				}
+				else if (option == 3)
+				{
+					strcpy(temp->activity, " More than twice per week");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("How often do you exercise?\npress 1 for never\n2 for less than twice per week\n3 for more than twice per week \n");
+					scanf("%d", &option);
+				}
+			}//choice 14
+		}
+		temp = temp->NEXT;
+	}
+}// updating patient details by name
+
+//***************************************************************************************************
+// updating Patient details matching the Patient pps entered by user
+void updatePatientDetailsByPps(struct node* top, int sPps)
+{
+	struct node* temp = top;
+	int pps;
+	int choice;
+	int option;
+	char mail[30];
+	while (temp != NULL)
+	{
+		if (searchList(top, sPps) == 0)
+		{
+			printf("No Records Found Make sure to enter correct Pps number\n");
+			return;
+		}
+		else if (temp->ppsNumber == sPps)
+		{
+			printf("Plese enter 1 to update patient's pps\n2 to update patient's First Name\n3 to update patient's Last Name\n4 to update patient's Year born\n5 to update patient's Gender\n6 to update patient's Email Address\n7 to update patient's Next of Kin Name\n8 to update patient's Last Appointment\n9 to update patient's Weight\n10 to update patient's Height\n11 to update patient's allergies to any medications\n12 to update patient's smoke per day\n13 to update patient's drink per week\n14 to update patient's exercise\n");
+			scanf("%d", &choice);
+			if (choice == 1)
+			{
+				printf("Please enter the Patient's PPS Number (must be unique)\n");
+				scanf("%d", &pps);
+
+				if (searchList(top, pps) == 1)
+				{
+					printf("Sorry the pps already exists already exists\n");
+					return;
+				}
+				temp->ppsNumber = pps;
+			}// choice 1
+			if (choice == 2)
+			{
+				printf("Please enter the Patient's First Name\n");
+				scanf("%s", &temp->firstName);
+			}// choice 2
+			if (choice == 3)
+			{
+				printf("Please enter the Patient's Second Name\n");
+				scanf("%s", &temp->lastName);
+			}// choice 3
+			if (choice == 4)
+			{
+				printf("Please enter the Patient's Year Born\n");
+				scanf("%d", &temp->yearBorn);
+			}//choice 4
+			if (choice == 5)
+			{
+				printf("Please enter the Patient's Gender\npress 1 for Male\n2 for Female\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+
+					strcpy(temp->gender, " Male");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->gender, "Female");
+				}
+				else
+				{
+					printf("Invalid Option Try Again\n");
+					printf("Please enter the Patient's Gender\npress 1 for Male\n2 for Female\n");
+					scanf("%d", &option);
+				}
+			}//choice 5
+			if (choice == 6)
+			{
+				printf("Please enter the Patient's Email Address (must contain an @, a full stop and a .com)\n");
+				scanf("%s", &mail);
+				if (((strchr(mail, '@')) && (strchr(mail, '.'))) && ((strstr(mail, ".com") != NULL) || (strstr(mail, ".ie") != NULL)))
+				{
+					strcpy(temp->email, mail);
+				}
+				else
+				{
+					printf("invalid Email Address");
+					return;
+				}
+			}//choice 6
+			if (choice == 7)
+			{
+				printf("Please enter the Patient's Next of Kin Name \n");
+				scanf("%s", &temp->nextOfKinName);
+			}//choice 7
+			if (choice == 8)
+			{
+				printf("Please enter the Patient's Last Appointment\n");
+				scanf("%s", &temp->lastAppointment);
+			}// choice 8
+			if (choice == 9)
+			{
+				printf("Please enter the Patient's Weight in Kg\n");
+				scanf("%d", &temp->weight);
+			}//choice 9
+			if (choice == 10)
+			{
+				printf("Please enter the Patient's Height in cm\n");
+				scanf("%f", &temp->height);
+			}// choice 10
+			if (choice == 11)
+			{
+				printf("Does the patient has any allergies to any medications?\npress 1 for yes\n2 for no\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+
+					strcpy(temp->AllergiesToAnyMedications, " yes");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->AllergiesToAnyMedications, " no");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("Does the patient has any allergies to any medications?\npress 1 for yes\n2 for no\n");
+					scanf("%d", &option);
+				}
+			}//choice 11
+			if (choice == 12)
+			{
+				printf("How many cigarettes would you smoke per day?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+					strcpy(temp->cigarettesSmokePerDay, " None");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->cigarettesSmokePerDay, " Less than ten cigarettes");
+				}
+				else if (option == 3)
+				{
+					strcpy(temp->cigarettesSmokePerDay, " More than ten cigarettes");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("How many cigarettes would you smoke per day?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+					scanf("%d", &option);
+				}
+			}//choice 12
+			if (choice == 13)
+			{
+				printf("How much alcohol would you drink per week?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, " None");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, " Less than ten units");
+				}
+				else if (option == 3)
+				{
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, " More than ten units");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("How much alcohol would you drink per week?\nPress 1 for none\n2 for less than ten\n3 for more than ten\n");
+					scanf("%d", &option);
+				}
+			}//choice 13
+			if (choice == 14)
+			{
+				printf("How often do you exercise?\npress 1 for never\n2 for less than twice per week\n3 for more than twice per week \n");
+				scanf("%d", &option);
+				if (option == 1)
+				{
+					strcpy(temp->activity, " Never");
+				}
+				else if (option == 2)
+				{
+					strcpy(temp->activity, " Less than twice per week");
+				}
+				else if (option == 3)
+				{
+					strcpy(temp->activity, " More than twice per week");
+				}
+				else
+				{
+					printf("Invalid Option Try Again");
+					printf("How often do you exercise?\npress 1 for never\n2 for less than twice per week\n3 for more than twice per week \n");
+					scanf("%d", &option);
+				}
+			}//choice 14
+		}
+		temp = temp->NEXT;
+	}
+}// updating patient details by pps
 
