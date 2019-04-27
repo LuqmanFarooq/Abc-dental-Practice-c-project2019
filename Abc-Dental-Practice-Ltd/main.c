@@ -3,13 +3,14 @@
 #include<string.h>
 #include <ctype.h>
 #include<conio.h>
+// patient details structure
 struct node {
 	int ppsNumber;
 	char firstName[20];
 	char lastName[20];
 	int yearBorn;
 	char gender[7];
-	char email[30];
+	char email[40];
 	char nextOfKinName[30];
 	char lastAppointment[10];
 	int weight;// in kg
@@ -21,10 +22,13 @@ struct node {
 
 	struct node* NEXT;
 };
+// login information structure
 struct user {
 	char username[7];
 	char password[7];
 }*pUser;
+
+// function redefnitions
 void userlogin(void);
 void menu();
 void AddPatientAtStart(struct node** top);
@@ -34,10 +38,16 @@ void DisplayPatientDetailsByPps(struct node* top, int pps);
 void DisplayPatientDetailsByName(struct node* top, char lastName[20]);
 int searchName(struct node* top, char lastName[20]);
 void stringLwr(char *s);
+
+//*******************************************************************************************************************
+// main function
 void main()
 {
 	userlogin();
 }//main
+
+//*******************************************************************************************************************
+// add patient at start function
 void AddPatientAtStart(struct node** top)
 {
 	struct node* newPatient;
@@ -59,7 +69,6 @@ void AddPatientAtStart(struct node** top)
 	scanf("%s", &newPatient->firstName);
 	printf("Please enter the Patient's Second Name\n");
 	scanf("%s", &newPatient->lastName);
-	//stringLwr(newPatient->lastName);
 	newPatient->ppsNumber = pps;
 	printf("Please enter the Patient's Year Born\n");
 	scanf("%d", &newPatient->yearBorn);
@@ -82,20 +91,22 @@ void AddPatientAtStart(struct node** top)
 	}
 	printf("Please enter the Patient's Email Address (must contain an @, a full stop and a .com)\n");
 	scanf("%s", &mail);
-		if ((strstr(mail, ".") == NULL)|| (strstr(mail, "@") == NULL)) {
-			// notcontains
-			printf("Invalid Email Try Again\n");
-			printf("Please enter the Patient's Email Address (must contain an @, a full stop and a .com)\n");
-			scanf("%s", &mail);
-		}
-	strcpy(newPatient->email, mail);
+	if (((strchr(mail, '@')) && (strchr(mail, '.'))) && ((strstr(mail, ".com") != NULL) || (strstr(mail, ".ie") != NULL)))
+	{
+		strcpy(newPatient->email, mail);
+	}
+	else
+	{
+		printf("invalid Email Address");
+		return;
+	}
 	printf("Please enter the Patient's Next of Kin Name \n");
 	scanf("%s", &newPatient->nextOfKinName);
 	printf("Please enter the Patient's Last Appointment\n");
 	scanf("%s", &newPatient->lastAppointment);
 	printf("Please enter the Patient's Weight in Kg\n");
 	scanf("%d", &newPatient->weight);
-	printf("Please enter the Patient's Height in cm\n");
+	printf("Please enter the Patient's Height in m\n");
 	scanf("%f", &newPatient->height);
 	printf("Does the patient has any allergies to any medications?\npress 1 for yes\n2 for no\n");
 	scanf("%d", &option);
@@ -179,6 +190,8 @@ void AddPatientAtStart(struct node** top)
 	*top = newPatient;
 }// add at start
 
+//**************************************************************************************************************//
+// search list function
 int searchList(struct node* top, int searchID)
 {
 	int found = 0;
@@ -198,6 +211,8 @@ int searchList(struct node* top, int searchID)
 	return found;
 }// search list
 
+//*********************************************************************************************************************
+// search by entring name function
 int searchName(struct node* top, char lastName[20])
 {
 	int found = 0;
@@ -218,12 +233,15 @@ int searchName(struct node* top, char lastName[20])
 	return found;
 }// search name
 
+//***********************************************************************************************************************
+// add patient at end of list function
 void AddPatientAtEnd(struct node* top)
 {
 	struct node* temp = top;
 	struct node* newPatient;
 	int pps;
 	int option;
+	char mail[30];
 	printf("Please enter the Patient's PPS Number (must be unique)\n");
 	scanf("%d", &pps);
 
@@ -260,12 +278,21 @@ void AddPatientAtEnd(struct node* top)
 	}
 	else
 	{
-		printf("Invalid Option Try Again");
+		printf("Invalid Option Try Again\n");
 		printf("Please enter the Patient's Gender\npress 1 for Male\n2 for Female\n");
 		scanf("%d", &option);
 	}
 	printf("Please enter the Patient's Email Address (must contain an @, a full stop and a .com)\n");
-	scanf("%s", &newPatient->email);
+	scanf("%s", &mail);
+	if (((strchr(mail, '@')) && (strchr(mail, '.'))) && ((strstr(mail, ".com") != NULL) || (strstr(mail, ".ie") != NULL)))
+	{
+		strcpy(newPatient->email, mail);
+	}
+	else
+	{
+		printf("invalid Email Address");
+		return;
+	}
 	printf("Please enter the Patient's Next of Kin Name \n");
 	scanf("%s", &newPatient->nextOfKinName);
 	printf("Please enter the Patient's Last Appointment\n");
@@ -444,6 +471,7 @@ void DisplayPatientDetailsByName(struct node* top, char lastName[20])
 	}
 }// patient details by name
 
+//****************************************************************************************************************
 // to lower case function
 void stringLwr(char *s)
 {
@@ -455,9 +483,9 @@ void stringLwr(char *s)
 		}
 		++i;
 	}
-}
+}// stringlwr
 
-
+//****************************************************************************************************************
 // login fuction 
 void userlogin(void) {
 
@@ -528,7 +556,10 @@ void userlogin(void) {
 	}
 	free(pUser);//free allocated memory
 	fclose(fp);
-}
+}// login function
+
+//*************************************************************************************************************************
+// menu options
 void menu()
 {
 	struct node* headPtr = NULL;
