@@ -12,7 +12,7 @@ struct node {
 	char gender[7];
 	char email[40];
 	char nextOfKinName[30];
-	char lastAppointment[10];
+	char lastAppointment[9];
 	int weight;// in kg
 	float height;// in M
 	char AllergiesToAnyMedications[20];
@@ -40,6 +40,7 @@ int searchName(struct node* top, char lastName[20]);
 void stringLwr(char *s);
 void updatePatientDetailsByName(struct node* top, char lastName[20]);
 void updatePatientDetailsByPps(struct node* top, int sPps);
+void DeletePatientDetailsByPps(struct node *head, int pps);
 //*******************************************************************************************************************
 // main function
 void main()
@@ -567,7 +568,7 @@ void menu()
 	struct node* headPtr = NULL;
 	int choice;
 	int chkId;
-	printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n-1 to exit the program: ");
+	printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n-1 to exit the program: ");
 	scanf("%d", &choice);
 	while (choice != -1)
 	{
@@ -622,8 +623,14 @@ void menu()
 				updatePatientDetailsByName(headPtr, name);
 			}// if by name
 		}// if choice 4
-
-		printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n-1 to exit the program: ");
+		else if (choice == 5)
+		{
+			int pps;
+			printf("Please enter the pps number of the patient to delete its record: ");
+			scanf("%d", &pps);
+			DeletePatientDetailsByPps(headPtr, pps);
+		}
+		printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n-1 to exit the program: ");
 		scanf("%d", &choice);
 	}//while
 }// menu
@@ -1017,4 +1024,38 @@ void updatePatientDetailsByPps(struct node* top, int sPps)
 		temp = temp->NEXT;
 	}
 }// updating patient details by pps
+
+//***************************************************************************************************
+
+// delete Patient details matching the PPS number entered by user
+void DeletePatientDetailsByPps(struct node *head, int pps)
+{
+	struct node *temp = head;
+	struct node *prev = NULL;
+	while (temp != NULL)
+	{
+		if (searchList(head, pps) == 0)
+		{
+			printf("No Records Found Make sure to enter correct Pps number\n");
+			return;
+		}
+		if (temp->ppsNumber == pps)
+		{
+			if (prev == NULL) { /*If the node is the head*/
+				head = head->NEXT;
+				free(temp);
+				return head;
+			}
+			else {
+				prev->NEXT = temp->NEXT;
+				free(temp);
+				return head;
+			}
+		}
+		prev = temp;
+		temp = temp->NEXT;
+	}
+
+}// delete patient details by pps
+
 
