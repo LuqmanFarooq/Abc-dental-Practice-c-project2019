@@ -9,7 +9,7 @@ struct node {
 	int ppsNumber;
 	char firstName[20];
 	char lastName[20];
-	int yearBorn[4];
+	int yearBorn;
 	char gender[7];
 	char email[40];
 	char nextOfKinName[30];
@@ -44,6 +44,10 @@ void updatePatientDetailsByName(struct node* top, char lastName[20]);
 void updatePatientDetailsByPps(struct node* top, int sPps);
 void DeletePatientDetailsByPps(struct node *head, int pps);
 void GenerateStatis(struct node* top);
+void SavingToFile(struct node* top);
+void ReadData(struct node** top);
+void ReadPatientAtEnd(struct node* top, int ppsNumber, char firstName[20], char lastName[20], int yearBorn, char gender[7], char email[40], char nextOfKinName[30], char lastAppointment[9], int weight, float height, float bmi, char AllergiesToAnyMedications[20], char cigarettesSmokePerDay[30], char alcoholWouldYouDrinkPerWeek[30], char activity[30]);
+void ReadPatientAtStart(struct node** top, int ppsNumber, char firstName[20], char lastName[20], int yearBorn, char gender[7], char email[40], char nextOfKinName[30], char lastAppointment[9], int weight, float height, float bmi, char AllergiesToAnyMedications[20], char cigarettesSmokePerDay[30], char alcoholWouldYouDrinkPerWeek[30], char activity[30]);
 //*******************************************************************************************************************
 // main function
 void main()
@@ -83,7 +87,7 @@ void AddPatientAtStart(struct node** top)
 	if (option == 1)
 	{
 
-		strcpy(newPatient->gender, " Male");
+		strcpy(newPatient->gender, "Male");
 	}
 	else if (option == 2)
 	{
@@ -277,7 +281,7 @@ void AddPatientAtEnd(struct node* top)
 	if (option == 1)
 	{
 
-		strcpy(newPatient->gender, " Male");
+		strcpy(newPatient->gender, "Male");
 	}
 	else if (option == 2)
 	{
@@ -584,6 +588,7 @@ void menu()
 	struct node* headPtr = NULL;
 	int choice;
 	int chkId;
+	//ReadData(&headPtr);
 	printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n6 to generate bmi stats\n-1 to exit the program: ");
 	scanf("%d", &choice);
 	while (choice != -1)
@@ -653,6 +658,7 @@ void menu()
 		printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n6 to generate bmi stats\n-1 to exit the program: ");
 		scanf("%d", &choice);
 	}//while
+	SavingToFile(headPtr);
 }// menu
 
 //**********************************************************************************************************
@@ -906,7 +912,7 @@ void updatePatientDetailsByPps(struct node* top, int sPps)
 				if (option == 1)
 				{
 
-					strcpy(temp->gender, " Male");
+					strcpy(temp->gender, "Male");
 				}
 				else if (option == 2)
 				{
@@ -1369,3 +1375,134 @@ void GenerateStatis(struct node* top)
 	}// cigarette choice 2
 }// generate stat
 
+//***************************************************************************************************************
+
+void ReadData(struct node** pat)
+{
+	FILE* rFile;
+	int numInputs,i;
+	// vars
+
+	int ppsNumber;
+	char firstName[20];
+	char lastName[20];
+	int yearBorn[4];
+	char gender[7];
+	char email[40];
+	char nextOfKinName[30];
+	char lastAppointment[9];
+	int weight;// in kg
+	float height;// in M
+	float bmi;
+	char AllergiesToAnyMedications[20];
+	char cigarettesSmokePerDay[30];
+	char alcoholWouldYouDrinkPerWeek[30];
+	char activity[30];
+
+	rFile = fopen("patient.txt", "r");
+	
+	if (rFile == NULL) {
+		printf("Error opening file..\n");
+		return;
+	}
+	else {
+		//read from file
+		while (!feof(rFile)) {
+			numInputs = fscanf(rFile, "%d %s %s %d %s %s %s %s %d %.1f %.1f %s %s %s %s\n", &ppsNumber, firstName,lastName, &yearBorn, gender, email, nextOfKinName, lastAppointment, &weight, &height, &bmi, AllergiesToAnyMedications, cigarettesSmokePerDay,alcoholWouldYouDrinkPerWeek, activity);
+			if (numInputs == 15) {
+				//createEmployee from file
+				if (i == 0)
+				{
+					i++;
+					ReadPatientAtStart(pat, ppsNumber, firstName, lastName, &yearBorn, gender, email, nextOfKinName, lastAppointment, weight, height, bmi, AllergiesToAnyMedications, cigarettesSmokePerDay, alcoholWouldYouDrinkPerWeek, activity);
+				}
+				else
+				{
+					ReadPatientAtEnd(*pat, ppsNumber, firstName, lastName, &yearBorn, gender, email, nextOfKinName, lastAppointment, weight, height, bmi, AllergiesToAnyMedications, cigarettesSmokePerDay, alcoholWouldYouDrinkPerWeek, activity);
+				}
+			}
+		}
+		fclose(rFile);
+	}
+	
+}
+
+// saving to file
+void SavingToFile(struct node* top)
+{
+	FILE* out;
+	// opening file in append mode
+	out = fopen("patient.txt", "a");
+	struct node* temp = top;
+	while (temp != NULL)
+	{
+		fprintf(out, "%d %s %s %d %s %s %s %s %d %.1f %.1f %s %s %s %s\n", temp->ppsNumber, temp->firstName, temp->lastName, temp->yearBorn, temp->gender, temp->email, temp->nextOfKinName, temp->lastAppointment, temp->weight, temp->height, temp->bmi, temp->AllergiesToAnyMedications, temp->cigarettesSmokePerDay, temp->alcoholWouldYouDrinkPerWeek, temp->activity);
+		temp = temp->NEXT;
+	}
+	if (out != NULL)
+	{
+		fclose(out);
+	}
+}// saving to file
+
+//******************************************************************************************************************
+void ReadPatientAtStart(struct node** top, int ppsNumber,char firstName[20],char lastName[20],int yearBorn,char gender[7],char email[40],char nextOfKinName[30],char lastAppointment[9],int weight,float height,float bmi,char AllergiesToAnyMedications[20],char cigarettesSmokePerDay[30],char alcoholWouldYouDrinkPerWeek[30],char activity[30]) {
+	struct node* newNode;
+	struct node* temp = *top;
+
+	newNode = (struct node*)malloc(sizeof(struct node));
+
+	newNode->ppsNumber = ppsNumber;
+	strcpy(newNode->firstName, firstName);
+	strcpy(newNode->lastName, lastName);
+	newNode->yearBorn = yearBorn;
+	strcpy(newNode->gender, gender);
+	strcpy(newNode->email, email);
+	strcpy(newNode->nextOfKinName, nextOfKinName);
+	strcpy(newNode->lastAppointment, lastAppointment);
+	newNode->weight = weight;
+	newNode->height = height;
+	newNode->bmi = bmi;
+	strcpy(newNode->AllergiesToAnyMedications, AllergiesToAnyMedications);
+	strcpy(newNode->cigarettesSmokePerDay, cigarettesSmokePerDay);
+	strcpy(newNode->alcoholWouldYouDrinkPerWeek, alcoholWouldYouDrinkPerWeek);
+	strcpy(newNode->activity, activity);
+
+	newNode->NEXT = *top;
+	*top = newNode;
+}// read patient at start
+
+//*************************************************************************************************************
+
+// read patient at end
+void ReadPatientAtEnd(struct node* top, int ppsNumber, char firstName[20], char lastName[20], int yearBorn, char gender[7], char email[40], char nextOfKinName[30], char lastAppointment[9], int weight, float height, float bmi, char AllergiesToAnyMedications[20], char cigarettesSmokePerDay[30], char alcoholWouldYouDrinkPerWeek[30], char activity[30]) {
+	struct node* temp = top;
+	struct node* newNode;
+
+	while (temp->NEXT != NULL)
+	{
+		temp = temp->NEXT;
+	}
+
+	newNode = (struct node*)malloc(sizeof(struct node));
+
+	newNode->ppsNumber = ppsNumber;
+	strcpy(newNode->firstName, firstName);
+	strcpy(newNode->lastName, lastName);
+	newNode->yearBorn = yearBorn;
+	strcpy(newNode->gender, gender);
+	strcpy(newNode->email, email);
+	strcpy(newNode->nextOfKinName, nextOfKinName);
+	strcpy(newNode->lastAppointment, lastAppointment);
+	newNode->weight = weight;
+	newNode->height = height;
+	newNode->bmi = bmi;
+	strcpy(newNode->AllergiesToAnyMedications, AllergiesToAnyMedications);
+	strcpy(newNode->cigarettesSmokePerDay, cigarettesSmokePerDay);
+	strcpy(newNode->alcoholWouldYouDrinkPerWeek, alcoholWouldYouDrinkPerWeek);
+	strcpy(newNode->activity, activity);
+
+
+	newNode->NEXT = NULL;
+	temp->NEXT = newNode;
+}

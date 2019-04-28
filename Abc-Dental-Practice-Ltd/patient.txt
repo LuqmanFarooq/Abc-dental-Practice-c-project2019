@@ -1,0 +1,3 @@
+12 Muhammad Hassan 9694348 Male asda.sdas@yahoo.com Usman 25/03/2018 70 1.5 31.1 yes Less than ten cigarettes More than ten units More than twice per week
+13 ali Hamza 9694668 Female ali.tony@gmit.ie qaiser 17/06/2017 60 1.8 19.6 no Less than ten cigarettes Less than ten units Never
+14 martin hynes 9709116 Male martin.hynes@gmit.ie lyiam 20022019 80 2.0 21.0 no More than ten cigarettes Less than ten units More than twice per week
