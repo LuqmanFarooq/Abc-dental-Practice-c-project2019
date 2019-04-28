@@ -1,0 +1,94 @@
+Patient no 1
+
+PPS Number: 11
+First Name: Muhammad
+Second Name: luqman
+Year Born: 1997
+Gender: Male
+Email Address: luqi.farooq@gmail.com
+Next of Kin Name: farooq
+Last Appointment: 12032018
+Weight: 80Kg
+Height: 1.4m
+BMI: 40.8
+Does the patient has any allergies to any medications:
+no
+How many cigarettes would you smoke per day? :
+None
+How much alcohol would you drink per week? : 
+None
+How often do you exercise? :
+Less than twice per week
+
+Patient no 2
+
+PPS Number: 12
+First Name: Martin
+Second Name: hynes
+Year Born: 1902
+Gender: Male
+Email Address: Martin.hynes@gmit.ie
+Next of Kin Name: Hynes
+Last Appointment: 19022017
+Weight: 70Kg
+Height: 1.5m
+BMI: 31.1
+Does the patient has any allergies to any medications:
+yes
+How many cigarettes would you smoke per day? :
+None
+How much alcohol would you drink per week? : 
+None
+How often do you exercise? :
+Never
+
+Patient no 3
+
+PPS Number: 13
+First Name: Liam
+Second Name: smyth
+Year Born: 1994
+Gender: Male
+Email Address: Liam.Smyth@gmit.ie
+Next of Kin Name: Smyth
+Last Appointment: 18052018
+Weight: 40Kg
+Height: 1.3m
+BMI: 23.7
+Does the patient has any allergies to any medications:
+yes
+How many cigarettes would you smoke per day? :
+None
+How much alcohol would you drink per week? : 
+None
+How often do you exercise? :
+Less than twice per week
+
+Patient no 4
+
+PPS Number: 15
+First Name: Mick
+Second Name: Morris
+Year Born: 1912
+Gender: Male
+Email Address: Mick.Morris@gmit.ie
+Next of Kin Name: Morris
+Last Appointment: 12092018
+Weight: 60Kg
+Height: 1.8m
+BMI: 19.6
+Does the patient has any allergies to any medications:
+yes
+How many cigarettes would you smoke per day? :
+None
+How much alcohol would you drink per week? : 
+None
+How often do you exercise? :
+Never
+
+Stats Based on Exercise : Never
+
+Patients with a BMI of less than 18.5 - 0 or 0.00
+Patients with a BMI of less than 25 - 1 or 50.00
+Patients with a BMI of less than 30 - 0 or 0.00
+Patients with a BMI of greater than 30 - 1 or 50.00
