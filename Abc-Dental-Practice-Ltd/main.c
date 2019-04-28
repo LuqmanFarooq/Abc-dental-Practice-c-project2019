@@ -3,18 +3,20 @@
 #include<string.h>
 #include <ctype.h>
 #include<conio.h>
+#include<math.h>
 // patient details structure
 struct node {
 	int ppsNumber;
 	char firstName[20];
 	char lastName[20];
-	int yearBorn;
+	int yearBorn[4];
 	char gender[7];
 	char email[40];
 	char nextOfKinName[30];
 	char lastAppointment[9];
 	int weight;// in kg
 	float height;// in M
+	float bmi;
 	char AllergiesToAnyMedications[20];
 	char cigarettesSmokePerDay[30];
 	char alcoholWouldYouDrinkPerWeek[30];
@@ -41,6 +43,7 @@ void stringLwr(char *s);
 void updatePatientDetailsByName(struct node* top, char lastName[20]);
 void updatePatientDetailsByPps(struct node* top, int sPps);
 void DeletePatientDetailsByPps(struct node *head, int pps);
+void GenerateStatis(struct node* top);
 //*******************************************************************************************************************
 // main function
 void main()
@@ -111,16 +114,17 @@ void AddPatientAtStart(struct node** top)
 	scanf("%d", &newPatient->weight);
 	printf("Please enter the Patient's Height in m\n");
 	scanf("%f", &newPatient->height);
+	newPatient->bmi = newPatient->weight / ((newPatient->height)*(newPatient->height));
 	printf("Does the patient has any allergies to any medications?\npress 1 for yes\n2 for no\n");
 	scanf("%d", &option);
 	if (option == 1)
 	{
 
-		strcpy(newPatient->AllergiesToAnyMedications, " yes");
+		strcpy(newPatient->AllergiesToAnyMedications, "yes");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->AllergiesToAnyMedications, " no");
+		strcpy(newPatient->AllergiesToAnyMedications, "no");
 	}
 	else
 	{
@@ -132,15 +136,15 @@ void AddPatientAtStart(struct node** top)
 	scanf("%d", &option);
 	if (option == 1)
 	{
-		strcpy(newPatient->cigarettesSmokePerDay, " None");
+		strcpy(newPatient->cigarettesSmokePerDay, "None");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->cigarettesSmokePerDay, " Less than ten cigarettes");
+		strcpy(newPatient->cigarettesSmokePerDay, "Less than ten cigarettes");
 	}
 	else if (option == 3)
 	{
-		strcpy(newPatient->cigarettesSmokePerDay, " More than ten cigarettes");
+		strcpy(newPatient->cigarettesSmokePerDay, "More than ten cigarettes");
 	}
 	else
 	{
@@ -152,15 +156,15 @@ void AddPatientAtStart(struct node** top)
 	scanf("%d", &option);
 	if (option == 1)
 	{
-		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, " None");
+		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, "None");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, " Less than ten units");
+		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, "Less than ten units");
 	}
 	else if (option == 3)
 	{
-		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, " More than ten units");
+		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, "More than ten units");
 	}
 	else
 	{
@@ -172,15 +176,15 @@ void AddPatientAtStart(struct node** top)
 	scanf("%d", &option);
 	if (option == 1)
 	{
-		strcpy(newPatient->activity, " Never");
+		strcpy(newPatient->activity, "Never");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->activity, " Less than twice per week");
+		strcpy(newPatient->activity, "Less than twice per week");
 	}
 	else if (option == 3)
 	{
-		strcpy(newPatient->activity, " More than twice per week");
+		strcpy(newPatient->activity, "More than twice per week");
 	}
 	else
 	{
@@ -302,18 +306,19 @@ void AddPatientAtEnd(struct node* top)
 	scanf("%s", &newPatient->lastAppointment);
 	printf("Please enter the Patient's Weight in Kg\n");
 	scanf("%d", &newPatient->weight);
-	printf("Please enter the Patient's Height in cm\n");
+	printf("Please enter the Patient's Height in m\n");
 	scanf("%f", &newPatient->height);
+	newPatient->bmi = newPatient->weight / ((newPatient->height)*(newPatient->height));
 	printf("Does the patient has any allergies to any medications?\npress 1 for yes\n2 for no\n");
 	scanf("%d", &option);
 	if (option == 1)
 	{
 
-		strcpy(newPatient->AllergiesToAnyMedications, " yes");
+		strcpy(newPatient->AllergiesToAnyMedications, "yes");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->AllergiesToAnyMedications, " no");
+		strcpy(newPatient->AllergiesToAnyMedications, "no");
 	}
 	else
 	{
@@ -325,15 +330,15 @@ void AddPatientAtEnd(struct node* top)
 	scanf("%d", &option);
 	if (option == 1)
 	{
-		strcpy(newPatient->cigarettesSmokePerDay, " None");
+		strcpy(newPatient->cigarettesSmokePerDay, "None");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->cigarettesSmokePerDay, " Less than ten cigarettes");
+		strcpy(newPatient->cigarettesSmokePerDay, "Less than ten cigarettes");
 	}
 	else if (option == 3)
 	{
-		strcpy(newPatient->cigarettesSmokePerDay, " More than ten cigarettes");
+		strcpy(newPatient->cigarettesSmokePerDay, "More than ten cigarettes");
 	}
 	else
 	{
@@ -345,15 +350,15 @@ void AddPatientAtEnd(struct node* top)
 	scanf("%d", &option);
 	if (option == 1)
 	{
-		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, " None");
+		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, "None");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, " Less than ten units");
+		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, "Less than ten units");
 	}
 	else if (option == 3)
 	{
-		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, " More than ten units");
+		strcpy(newPatient->alcoholWouldYouDrinkPerWeek, "More than ten units");
 	}
 	else
 	{
@@ -365,15 +370,15 @@ void AddPatientAtEnd(struct node* top)
 	scanf("%d", &option);
 	if (option == 1)
 	{
-		strcpy(newPatient->activity, " Never");
+		strcpy(newPatient->activity, "Never");
 	}
 	else if (option == 2)
 	{
-		strcpy(newPatient->activity, " Less than twice per week");
+		strcpy(newPatient->activity, "Less than twice per week");
 	}
 	else if (option == 3)
 	{
-		strcpy(newPatient->activity, " More than twice per week");
+		strcpy(newPatient->activity, "More than twice per week");
 	}
 	else
 	{
@@ -402,6 +407,7 @@ void DisplayAllPatients(struct node* top)
 		printf("Last Appointment: %s\n", temp->lastAppointment);
 		printf("Weight: %dKg\n", temp->weight);
 		printf("Height: %.1fm\n", temp->height);
+		printf("BMI: %.1f\n",temp->bmi);
 		printf("Does the patient has any allergies to any medications:%s\n", &temp->AllergiesToAnyMedications);
 		printf("How many cigarettes would you smoke per day? :  %s\n", temp->cigarettesSmokePerDay);
 		printf("How much alcohol would you drink per week? : %s\n", temp->alcoholWouldYouDrinkPerWeek);
@@ -433,6 +439,7 @@ void DisplayPatientDetailsByPps(struct node* top, int pps)
 			printf("Last Appointment: %s\n", temp->lastAppointment);
 			printf("Weight: %dKg\n", temp->weight);
 			printf("Height: %.1fm\n", temp->height);
+			printf("BMI: %.1f\n", temp->bmi);
 			printf("Does the patient has any allergies to any medications:%s\n", &temp->AllergiesToAnyMedications);
 			printf("How many cigarettes would you smoke per day? :  %s\n", temp->cigarettesSmokePerDay);
 			printf("How much alcohol would you drink per week? : %s\n", temp->alcoholWouldYouDrinkPerWeek);
@@ -465,6 +472,7 @@ void DisplayPatientDetailsByName(struct node* top, char lastName[20])
 			printf("Last Appointment: %s\n", temp->lastAppointment);
 			printf("Weight: %dKg\n", temp->weight);
 			printf("Height: %.1fm\n", temp->height);
+			printf("BMI: %.1f\n", temp->bmi);
 			printf("Does the patient has any allergies to any medications:%s\n", &temp->AllergiesToAnyMedications);
 			printf("How many cigarettes would you smoke per day? :  %s\n", temp->cigarettesSmokePerDay);
 			printf("How much alcohol would you drink per week? : %s\n", temp->alcoholWouldYouDrinkPerWeek);
@@ -550,7 +558,15 @@ void userlogin(void) {
 			printf("Choose A Username: ");
 			scanf("%6s", pUser->username);
 			printf("Choose A Password: ");
-			scanf("%6s", pUser->password);
+			for (j = 0; j < 6; j++)
+			{
+				ch = getch();
+				pwd[j] = ch;
+				ch = '*';
+				printf("%c", ch);
+			}
+			pwd[j] = '\0';
+			strcpy(pUser->password , pwd);
 			fwrite(pUser, sizeof(struct user), 1, fp);
 			printf("Add another account? (Y/N): ");
 			scanf(" %c", &c);//skip leading whitespace
@@ -568,7 +584,7 @@ void menu()
 	struct node* headPtr = NULL;
 	int choice;
 	int chkId;
-	printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n-1 to exit the program: ");
+	printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n6 to generate bmi stats\n-1 to exit the program: ");
 	scanf("%d", &choice);
 	while (choice != -1)
 	{
@@ -629,8 +645,12 @@ void menu()
 			printf("Please enter the pps number of the patient to delete its record: ");
 			scanf("%d", &pps);
 			DeletePatientDetailsByPps(headPtr, pps);
+		}// choice 5
+		else if (choice == 6)
+		{
+			GenerateStatis(headPtr);
 		}
-		printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n-1 to exit the program: ");
+		printf("Please enter\n1 to add Patient Details\n2 to display all Patient Details\n3 to display Patient details matching the PPS number or name entered by user\n4 to update Patient details matching the PPS number or name entered by user\n5 to delete patient details by pps number\n6 to generate bmi stats\n-1 to exit the program: ");
 		scanf("%d", &choice);
 	}//while
 }// menu
@@ -689,7 +709,7 @@ void updatePatientDetailsByName(struct node* top, char lastName[20])
 				if (option == 1)
 				{
 
-					strcpy(temp->gender, " Male");
+					strcpy(temp->gender, "Male");
 				}
 				else if (option == 2)
 				{
@@ -730,11 +750,13 @@ void updatePatientDetailsByName(struct node* top, char lastName[20])
 			{
 				printf("Please enter the Patient's Weight in Kg\n");
 				scanf("%d", &temp->weight);
+				temp->bmi = temp->weight / ((temp->height)*(temp->height));
 			}//choice 9
 			if (choice == 10)
 			{
-				printf("Please enter the Patient's Height in cm\n");
+				printf("Please enter the Patient's Height in m\n");
 				scanf("%f", &temp->height);
+				temp->bmi = temp->weight / ((temp->height)*(temp->height));
 			}// choice 10
 			if (choice == 11)
 			{
@@ -743,11 +765,11 @@ void updatePatientDetailsByName(struct node* top, char lastName[20])
 				if (option == 1)
 				{
 
-					strcpy(temp->AllergiesToAnyMedications, " yes");
+					strcpy(temp->AllergiesToAnyMedications, "yes");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->AllergiesToAnyMedications, " no");
+					strcpy(temp->AllergiesToAnyMedications, "no");
 				}
 				else
 				{
@@ -762,15 +784,15 @@ void updatePatientDetailsByName(struct node* top, char lastName[20])
 				scanf("%d", &option);
 				if (option == 1)
 				{
-					strcpy(temp->cigarettesSmokePerDay, " None");
+					strcpy(temp->cigarettesSmokePerDay, "None");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->cigarettesSmokePerDay, " Less than ten cigarettes");
+					strcpy(temp->cigarettesSmokePerDay, "Less than ten cigarettes");
 				}
 				else if (option == 3)
 				{
-					strcpy(temp->cigarettesSmokePerDay, " More than ten cigarettes");
+					strcpy(temp->cigarettesSmokePerDay, "More than ten cigarettes");
 				}
 				else
 				{
@@ -785,15 +807,15 @@ void updatePatientDetailsByName(struct node* top, char lastName[20])
 				scanf("%d", &option);
 				if (option == 1)
 				{
-					strcpy(temp->alcoholWouldYouDrinkPerWeek, " None");
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, "None");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->alcoholWouldYouDrinkPerWeek, " Less than ten units");
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, "Less than ten units");
 				}
 				else if (option == 3)
 				{
-					strcpy(temp->alcoholWouldYouDrinkPerWeek, " More than ten units");
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, "More than ten units");
 				}
 				else
 				{
@@ -808,15 +830,15 @@ void updatePatientDetailsByName(struct node* top, char lastName[20])
 				scanf("%d", &option);
 				if (option == 1)
 				{
-					strcpy(temp->activity, " Never");
+					strcpy(temp->activity, "Never");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->activity, " Less than twice per week");
+					strcpy(temp->activity, "Less than twice per week");
 				}
 				else if (option == 3)
 				{
-					strcpy(temp->activity, " More than twice per week");
+					strcpy(temp->activity, "More than twice per week");
 				}
 				else
 				{
@@ -925,11 +947,13 @@ void updatePatientDetailsByPps(struct node* top, int sPps)
 			{
 				printf("Please enter the Patient's Weight in Kg\n");
 				scanf("%d", &temp->weight);
+				temp->bmi = temp->weight / ((temp->height)*(temp->height));
 			}//choice 9
 			if (choice == 10)
 			{
-				printf("Please enter the Patient's Height in cm\n");
+				printf("Please enter the Patient's Height in m\n");
 				scanf("%f", &temp->height);
+				temp->bmi = temp->weight / ((temp->height)*(temp->height));
 			}// choice 10
 			if (choice == 11)
 			{
@@ -938,11 +962,11 @@ void updatePatientDetailsByPps(struct node* top, int sPps)
 				if (option == 1)
 				{
 
-					strcpy(temp->AllergiesToAnyMedications, " yes");
+					strcpy(temp->AllergiesToAnyMedications, "yes");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->AllergiesToAnyMedications, " no");
+					strcpy(temp->AllergiesToAnyMedications, "no");
 				}
 				else
 				{
@@ -957,15 +981,15 @@ void updatePatientDetailsByPps(struct node* top, int sPps)
 				scanf("%d", &option);
 				if (option == 1)
 				{
-					strcpy(temp->cigarettesSmokePerDay, " None");
+					strcpy(temp->cigarettesSmokePerDay, "None");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->cigarettesSmokePerDay, " Less than ten cigarettes");
+					strcpy(temp->cigarettesSmokePerDay, "Less than ten cigarettes");
 				}
 				else if (option == 3)
 				{
-					strcpy(temp->cigarettesSmokePerDay, " More than ten cigarettes");
+					strcpy(temp->cigarettesSmokePerDay, "More than ten cigarettes");
 				}
 				else
 				{
@@ -980,15 +1004,15 @@ void updatePatientDetailsByPps(struct node* top, int sPps)
 				scanf("%d", &option);
 				if (option == 1)
 				{
-					strcpy(temp->alcoholWouldYouDrinkPerWeek, " None");
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, "None");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->alcoholWouldYouDrinkPerWeek, " Less than ten units");
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, "Less than ten units");
 				}
 				else if (option == 3)
 				{
-					strcpy(temp->alcoholWouldYouDrinkPerWeek, " More than ten units");
+					strcpy(temp->alcoholWouldYouDrinkPerWeek, "More than ten units");
 				}
 				else
 				{
@@ -1003,15 +1027,15 @@ void updatePatientDetailsByPps(struct node* top, int sPps)
 				scanf("%d", &option);
 				if (option == 1)
 				{
-					strcpy(temp->activity, " Never");
+					strcpy(temp->activity, "Never");
 				}
 				else if (option == 2)
 				{
-					strcpy(temp->activity, " Less than twice per week");
+					strcpy(temp->activity, "Less than twice per week");
 				}
 				else if (option == 3)
 				{
-					strcpy(temp->activity, " More than twice per week");
+					strcpy(temp->activity, "More than twice per week");
 				}
 				else
 				{
@@ -1055,7 +1079,293 @@ void DeletePatientDetailsByPps(struct node *head, int pps)
 		prev = temp;
 		temp = temp->NEXT;
 	}
-
 }// delete patient details by pps
 
+
+// generate stats
+void GenerateStatis(struct node* top)
+{
+	int choice,option;
+	struct node* temp = top;
+	printf("Press 1 to generate bmi stats based on exercise\n2 to generate bmi stats based on cigarettes smoked per day\n");
+	scanf("%d", &choice);
+	if (choice == 1)
+	{
+		int bmiGreaterThan30 = 0, bmiLessThan30 = 0, bmiLessThan25 = 0, bmiLessThan18 = 0;
+		double totalInThatCategory=0;
+		double percentDivision=0;
+		double bmiGreaterThan30Percent =0, bmiLessThan30Percent = 0, bmiLessThan25Percent = 0, bmiLessThan18Percent = 0;
+		printf("How often do you exercise?\n1. Never\n2. Less than twice per week\n3. More than twice per week\n");
+		scanf("%d", &option);
+		if (option == 1)
+		{
+			while (temp != NULL)
+			{
+				if (strcmp(temp->activity, "Never") == 0)
+				{
+					totalInThatCategory++;
+					if (temp->bmi > 30)
+					{
+						bmiGreaterThan30++;
+					}
+					else if (temp->bmi > 25 && temp->bmi < 30)
+					{
+						bmiLessThan30++;
+					}
+					else if (temp->bmi > 18.5 && temp->bmi < 25)
+					{
+						bmiLessThan25++;
+					}
+					else
+					{
+						bmiLessThan18++;
+					}
+				}// never if
+
+					temp = temp->NEXT;
+			}// while
+			// bmi stat calculation
+			// dividing 100 by total count in a category to get percentage for 1
+			percentDivision = 100 / totalInThatCategory;
+			// multiplying the percentage result with bmi counts
+			bmiGreaterThan30Percent = bmiGreaterThan30 * percentDivision;
+			bmiLessThan30Percent = bmiLessThan30 * percentDivision;
+			bmiLessThan25Percent = bmiLessThan25 * percentDivision;
+			bmiLessThan18Percent = bmiLessThan18 * percentDivision;
+			// printing bmi stats
+			printf("Patients with a BMI of less than 18.5 - %d or %.2lf\n",bmiLessThan18,bmiLessThan18Percent);
+			printf("Patients with a BMI of less than 25 - %d or %.2lf\n", bmiLessThan25, bmiLessThan25Percent);
+			printf("Patients with a BMI of less than 30 - %d or %.2lf\n", bmiLessThan30, bmiLessThan30Percent);
+			printf("Patients with a BMI of greater than 30 - %d or %.2lf\n",bmiGreaterThan30,bmiGreaterThan30Percent);
+		}// option 1
+		else if (option == 2)
+		{
+			while (temp != NULL)
+			{
+				if (strcmp(temp->activity, "Less than twice per week") == 0)
+				{
+					totalInThatCategory++;
+					if (temp->bmi > 30)
+					{
+						bmiGreaterThan30++;
+					}
+					else if (temp->bmi > 25 && temp->bmi < 30)
+					{
+						bmiLessThan30++;
+					}
+					else if (temp->bmi > 18.5 && temp->bmi < 25)
+					{
+						bmiLessThan25++;
+					}
+					else
+					{
+						bmiLessThan18++;
+					}
+				}// twice week if
+				temp = temp->NEXT;
+			}//while
+				
+				// bmi stat calculation
+			// dividing 100 by total count in a category to get percentage for 1
+				percentDivision = 100 / totalInThatCategory;
+				// multiplying the percentage result with bmi counts
+				bmiGreaterThan30Percent = bmiGreaterThan30 * percentDivision;
+				bmiLessThan30Percent = bmiLessThan30 * percentDivision;
+				bmiLessThan25Percent = bmiLessThan25 * percentDivision;
+				bmiLessThan18Percent = bmiLessThan18 * percentDivision;
+				// printing bmi stats
+				printf("Patients with a BMI of less than 18.5 - %d or %.2lf\n", bmiLessThan18, bmiLessThan18Percent);
+				printf("Patients with a BMI of less than 25 - %d or %.2lf\n", bmiLessThan25, bmiLessThan25Percent);
+				printf("Patients with a BMI of less than 30 - %d or %.2lf\n", bmiLessThan30, bmiLessThan30Percent);
+				printf("Patients with a BMI of greater than 30 - %d or %.2lf\n", bmiGreaterThan30, bmiGreaterThan30Percent);
+		}// option 2
+		else if (option == 3)
+		{
+			while (temp != NULL)
+			{
+				if (strcmp(temp->activity, "More than twice per week") == 0)
+				{
+					totalInThatCategory++;
+					if (temp->bmi > 30)
+					{
+						bmiGreaterThan30++;
+					}
+					else if (temp->bmi > 25 && temp->bmi < 30)
+					{
+						bmiLessThan30++;
+					}
+					else if (temp->bmi > 18.5 && temp->bmi < 25)
+					{
+						bmiLessThan25++;
+					}
+					else
+					{
+						bmiLessThan18++;
+					}
+				}// twice week if
+				temp = temp->NEXT;
+			}//while
+			// bmi stat calculation
+			// dividing 100 by total count in a category to get percentage for 1
+			percentDivision = 100 / totalInThatCategory;
+			// multiplying the percentage result with bmi counts
+			bmiGreaterThan30Percent = bmiGreaterThan30 * percentDivision;
+			bmiLessThan30Percent = bmiLessThan30 * percentDivision;
+			bmiLessThan25Percent = bmiLessThan25 * percentDivision;
+			bmiLessThan18Percent = bmiLessThan18 * percentDivision;
+			// printing bmi stats
+			printf("Patients with a BMI of less than 18.5 - %d or %.2lf\n", bmiLessThan18, bmiLessThan18Percent);
+			printf("Patients with a BMI of less than 25 - %d or %.2lf\n", bmiLessThan25, bmiLessThan25Percent);
+			printf("Patients with a BMI of less than 30 - %d or %.2lf\n", bmiLessThan30, bmiLessThan30Percent);
+			printf("Patients with a BMI of greater than 30 - %d or %.2lf\n", bmiGreaterThan30, bmiGreaterThan30Percent);
+		}// option 3
+		else
+		{
+			printf("Invalid Option Try Again");
+			printf("How often do you exercise?\npress 1 for never\n2 for less than twice per week\n3 for more than twice per week \n");
+			scanf("%d", &option);
+		}//else 
+		
+	}// exercice choice
+	
+	//**********************************main choice 2**************************************************
+	if (choice == 2)
+	{
+		int bmiGreaterThan30 = 0, bmiLessThan30 = 0, bmiLessThan25 = 0, bmiLessThan18 = 0;
+		double totalInThatCategory = 0;
+		double percentDivision = 0;
+		double bmiGreaterThan30Percent = 0, bmiLessThan30Percent = 0, bmiLessThan25Percent = 0, bmiLessThan18Percent = 0;
+		printf("How many cigarettes would you smoke per day?\npress\n1. None\n2. Less than ten cigarettes\n3. More than ten cigarettes\n");
+		scanf("%d", &option);
+		if (option == 1)
+		{
+			while (temp != NULL)
+			{
+				if (strcmp(temp->cigarettesSmokePerDay, "None") == 0)
+				{
+					totalInThatCategory++;
+					if (temp->bmi > 30)
+					{
+						bmiGreaterThan30++;
+					}
+					else if (temp->bmi > 25 && temp->bmi < 30)
+					{
+						bmiLessThan30++;
+					}
+					else if (temp->bmi > 18.5 && temp->bmi < 25)
+					{
+						bmiLessThan25++;
+					}
+					else
+					{
+						bmiLessThan18++;
+					}
+				}// never if
+
+				temp = temp->NEXT;
+			}// while
+			// bmi stat calculation
+			// dividing 100 by total count in a category to get percentage for 1
+			percentDivision = 100 / totalInThatCategory;
+			// multiplying the percentage result with bmi counts
+			bmiGreaterThan30Percent = bmiGreaterThan30 * percentDivision;
+			bmiLessThan30Percent = bmiLessThan30 * percentDivision;
+			bmiLessThan25Percent = bmiLessThan25 * percentDivision;
+			bmiLessThan18Percent = bmiLessThan18 * percentDivision;
+			// printing bmi stats
+			printf("Patients with a BMI of less than 18.5 - %d or %.2lf\n", bmiLessThan18, bmiLessThan18Percent);
+			printf("Patients with a BMI of less than 25 - %d or %.2lf\n", bmiLessThan25, bmiLessThan25Percent);
+			printf("Patients with a BMI of less than 30 - %d or %.2lf\n", bmiLessThan30, bmiLessThan30Percent);
+			printf("Patients with a BMI of greater than 30 - %d or %.2lf\n", bmiGreaterThan30, bmiGreaterThan30Percent);
+		}// option 1
+		else if (option == 2)
+		{
+			while (temp != NULL)
+			{
+				if (strcmp(temp->cigarettesSmokePerDay, "Less than ten cigarettes") == 0)
+				{
+					totalInThatCategory++;
+					if (temp->bmi > 30)
+					{
+						bmiGreaterThan30++;
+					}
+					else if (temp->bmi > 25 && temp->bmi < 30)
+					{
+						bmiLessThan30++;
+					}
+					else if (temp->bmi > 18.5 && temp->bmi < 25)
+					{
+						bmiLessThan25++;
+					}
+					else
+					{
+						bmiLessThan18++;
+					}
+				}// twice week if
+				temp = temp->NEXT;
+			}//while
+
+				// bmi stat calculation
+			// dividing 100 by total count in a category to get percentage for 1
+			percentDivision = 100 / totalInThatCategory;
+			// multiplying the percentage result with bmi counts
+			bmiGreaterThan30Percent = bmiGreaterThan30 * percentDivision;
+			bmiLessThan30Percent = bmiLessThan30 * percentDivision;
+			bmiLessThan25Percent = bmiLessThan25 * percentDivision;
+			bmiLessThan18Percent = bmiLessThan18 * percentDivision;
+			// printing bmi stats
+			printf("Patients with a BMI of less than 18.5 - %d or %.2lf\n", bmiLessThan18, bmiLessThan18Percent);
+			printf("Patients with a BMI of less than 25 - %d or %.2lf\n", bmiLessThan25, bmiLessThan25Percent);
+			printf("Patients with a BMI of less than 30 - %d or %.2lf\n", bmiLessThan30, bmiLessThan30Percent);
+			printf("Patients with a BMI of greater than 30 - %d or %.2lf\n", bmiGreaterThan30, bmiGreaterThan30Percent);
+		}// option 2
+		else if (option == 3)
+		{
+			while (temp != NULL)
+			{
+				if (strcmp(temp->cigarettesSmokePerDay, "More than ten cigarettes") == 0)
+				{
+					totalInThatCategory++;
+					if (temp->bmi > 30)
+					{
+						bmiGreaterThan30++;
+					}
+					else if (temp->bmi > 25 && temp->bmi < 30)
+					{
+						bmiLessThan30++;
+					}
+					else if (temp->bmi > 18.5 && temp->bmi < 25)
+					{
+						bmiLessThan25++;
+					}
+					else
+					{
+						bmiLessThan18++;
+					}
+				}// twice week if
+				temp = temp->NEXT;
+			}//while
+			// bmi stat calculation
+			// dividing 100 by total count in a category to get percentage for 1
+			percentDivision = 100 / totalInThatCategory;
+			// multiplying the percentage result with bmi counts
+			bmiGreaterThan30Percent = bmiGreaterThan30 * percentDivision;
+			bmiLessThan30Percent = bmiLessThan30 * percentDivision;
+			bmiLessThan25Percent = bmiLessThan25 * percentDivision;
+			bmiLessThan18Percent = bmiLessThan18 * percentDivision;
+			// printing bmi stats
+			printf("Patients with a BMI of less than 18.5 - %d or %.2lf\n", bmiLessThan18, bmiLessThan18Percent);
+			printf("Patients with a BMI of less than 25 - %d or %.2lf\n", bmiLessThan25, bmiLessThan25Percent);
+			printf("Patients with a BMI of less than 30 - %d or %.2lf\n", bmiLessThan30, bmiLessThan30Percent);
+			printf("Patients with a BMI of greater than 30 - %d or %.2lf\n", bmiGreaterThan30, bmiGreaterThan30Percent);
+		}// option 3
+		else
+		{
+			printf("Invalid Option Try Again");
+			printf("How many cigarettes would you smoke per day?\npress\n1. None\n2. Less than ten cigarettes\n3. More than ten cigarettes\n");
+			scanf("%d", &option);
+		}//else 
+
+	}// cigarette choice 2
+}// generate stat
 
