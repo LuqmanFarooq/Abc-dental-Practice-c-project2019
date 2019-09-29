@@ -2,8 +2,8 @@
 2nd year final advance c project
 This is a 2nd year project of Advance c programming module.
 **Layout**
--Login screen
-*set of menu options to enter,delete,edit,or search patient records.
+- Login screen
+* set of menu options to enter,delete,edit,or search patient records.
 **Functionality**
 *Loging scrren works by storing login data in linked list.
 *then after login a menu displays with number of options.
